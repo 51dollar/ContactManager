@@ -1,0 +1,7 @@
+﻿services:
+  contactmanager:
+    image: contactmanager
+    build:
+      context: .
+      dockerfile: ContactManager/Dockerfile
+
