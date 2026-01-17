@@ -1,0 +1,70 @@
+﻿@model ContactManager.Models.ViewModels.IndexViewModel
+
+<div>
+    <h2>Contacts</h2>
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#contactModal"
+            data-title="Create contact"
+            id="addContactBtn">
+        Add Contact
+    </button>
+</div>
+
+<div>
+    <table class="display" id="contactsTable">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Job</th>
+            <th>Birth Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in Model.Contacts)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>@c.MobilePhone</td>
+                <td>@c.JobTitle</td>
+                <td>@c.BirthDate.ToShortDateString()</td>
+                <td>
+                    <button class="btn btn-warning btn-sm edit-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#contactModal"
+                            data-title="Edit contact"
+                            data-id="@c.Id"
+                            data-name="@c.Name"
+                            data-phone="@c.MobilePhone"
+                            data-job="@c.JobTitle"
+                            data-birth="@c.BirthDate.ToString("yyyy-MM-dd")">
+                        Edit
+                    </button>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@c.Id"
+                          method="post"
+                          class="d-inline">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete contact?')">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("Modal/_ContactModal", Model.Contact)
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    
+    <script src="~/js/contact/contact.modal.js"></script>
+    <script src="js/contact/contact.DataTable.js"></script>
+}
