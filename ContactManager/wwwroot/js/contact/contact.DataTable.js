@@ -5,7 +5,7 @@
         searching: true,
         ordering: true,
         info: true,
-        lengthChange: false,
+        lengthChange: true,
         pageLength: 10,
         language: {
             search: "Search:",
