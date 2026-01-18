@@ -20,7 +20,7 @@ public class ContactService(ContactRepository repository) : IContactService
             Name = model.Name,
             MobilePhone = model.MobilePhone,
             JobTitle = model.JobTitle,
-            BirthDate = model.BirthDate
+            BirthDate = model.BirthDate!.Value
         };
         
         await repository.AddAsync(entity);
@@ -38,7 +38,7 @@ public class ContactService(ContactRepository repository) : IContactService
         entity.Name = model.Name;
         entity.MobilePhone = model.MobilePhone;
         entity.JobTitle = model.JobTitle;
-        entity.BirthDate = model.BirthDate;
+        entity.BirthDate = model.BirthDate!.Value;
         
         await repository.SaveChangesAsync();
         

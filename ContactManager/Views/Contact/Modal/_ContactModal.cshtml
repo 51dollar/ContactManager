@@ -1,11 +1,11 @@
 ﻿@model ContactManager.Models.ViewModels.ContactViewModel
 
 <div class="modal fade" id="contactModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <form id="contactForm" method="post">
                 @Html.AntiForgeryToken()
-                
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle">Contact</h5>
                     <button type="button"
@@ -15,37 +15,45 @@
                 </div>
 
                 <div class="modal-body">
-                    
-                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="Id" type="hidden"/>
 
                     <div class="mb-3">
-                        <label asp-for="Name"></label>
-                        <input asp-for="Name" class="form-control"/>
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Minimum of 2 characters"/>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="MobilePhone"></label>
-                        <input asp-for="MobilePhone" class="form-control"/>
+                        <label asp-for="MobilePhone" class="form-label"></label>
+                        <input asp-for="MobilePhone"
+                               class="form-control"
+                               placeholder="+12345678901"/>
                         <span asp-validation-for="MobilePhone" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="JobTitle"></label>
-                        <input asp-for="JobTitle" class="form-control"/>
+                        <label asp-for="JobTitle" class="form-label"></label>
+                        <input asp-for="JobTitle"
+                               class="form-control"
+                               placeholder="Minimum of 2 characters"/>
                         <span asp-validation-for="JobTitle" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="BirthDate"></label>
-                        <input asp-for="BirthDate" type="date" class="form-control"/>
+                        <label asp-for="BirthDate" class="form-label"></label>
+                        <input asp-for="BirthDate"
+                               type="date"
+                               class="form-control"
+                               min="1900-01-01"
+                               max="@DateTime.Today.ToString("yyyy-MM-dd")"/>
                         <span asp-validation-for="BirthDate" class="text-danger"></span>
                     </div>
-
                 </div>
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-success btn-lg">
                         Save
                     </button>
                 </div>

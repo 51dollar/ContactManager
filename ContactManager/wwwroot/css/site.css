@@ -1,31 +1,66 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+    background-color: var(--bs-gray-100);
+
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.app-box {
+    background-color: var(--bs-white);
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.btn {
+    border-radius: 24px !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+#contactModal .modal-content {
+    border-radius: 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+#contactModal .modal-header,
+#contactModal .modal-footer {
+    border: none;
+}
+
+#contactModal .modal-dialog {
+    max-width: 520px;
+}
+
+#contactModal .modal-header {
+    padding-bottom: 0;
+}
+
+#contactModal .modal-body {
+    padding-top: 1rem;
+}
+
+#contactModal .modal-title {
+    font-weight: 600;
+}
+
+#contactModal .form-control {
+    border-radius: 24px;
+}
+
+#contactModal .modal-footer .btn {
+    min-width: 110px;
 }
