@@ -51,6 +51,9 @@ public class ContactController(
         {
             var entity = await service.AddAsync(model);
             
+            TempData["Toast.Type"] = "success";
+            TempData["Toast.Message"] = $"Contact \"{entity.Name}\" created";
+            
             logger.LogInformation("Contact created. Name: {Name}", entity.Name);
             return RedirectToAction(nameof(Index));
         }
@@ -80,9 +83,15 @@ public class ContactController(
             var updateEntity = await service.UpdateAsync(id, model);
             if (!updateEntity)
             {
+                TempData["Toast.Type"] = "warning";
+                TempData["Toast.Message"] = "Contact was not updated";
+                
                 logger.LogWarning("Contact {Id} was not updated", model.Id);
                 return RedirectToAction(nameof(Index));
             }
+            
+            TempData["Toast.Type"] = "success";
+            TempData["Toast.Message"] = $"Contact \"{model.Name}\" updated";
             
             logger.LogInformation("Contact updated. Name: {Name}",  model.Name);
             return RedirectToAction(nameof(Index));
@@ -109,9 +118,15 @@ public class ContactController(
             var deleteEntity = await service.DeleteAsync(id);
             if (!deleteEntity)
             {
+                TempData["Toast.Type"] = "warning";
+                TempData["Toast.Message"] = "Contact was not deleted";
+                
                 logger.LogWarning("Contact {Id} was not deleted", id);
                 return RedirectToAction(nameof(Index));
             }
+            
+            TempData["Toast.Type"] = "success";
+            TempData["Toast.Message"] = "Contact deleted";
             
             logger.LogInformation("Contact {Id} was deleted.", id);
             return RedirectToAction(nameof(Index));
