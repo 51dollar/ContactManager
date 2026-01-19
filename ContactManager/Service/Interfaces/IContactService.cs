@@ -9,4 +9,5 @@ public interface IContactService
     public Task<Contact> AddAsync(ContactViewModel model);
     public Task<bool> UpdateAsync(Guid id, ContactViewModel model);
     public Task<bool> DeleteAsync(Guid id);
+    public Task<int> DeleteRangeAsync(IEnumerable<Guid> ids);
 }

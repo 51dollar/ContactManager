@@ -2,6 +2,7 @@
 using ContactManager.Models.Entity;
 using ContactManager.Models.ViewModels;
 using ContactManager.Service.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContactManager.Service;
 
@@ -55,6 +56,19 @@ public class ContactService(ContactRepository repository) : IContactService
         await repository.SaveChangesAsync();
         
         return true;
+    }
+    
+    public async Task<int> DeleteRangeAsync(IEnumerable<Guid> ids)
+    {
+        var validIds = ids
+            .Where(id => id != Guid.Empty)
+            .Distinct()
+            .ToList();
+
+        if (validIds.Count == 0)
+            return 0;
+
+        return await repository.DeleteByIdsAsync(validIds);
     }
     
     private async Task<Contact?> GetByIdAsync(Guid id) => 

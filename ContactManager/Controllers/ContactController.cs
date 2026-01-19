@@ -42,7 +42,7 @@ public class ContactController(
             var errors = ModelState.Values
                 .SelectMany(v => v.Errors)
                 .Select(e => e.ErrorMessage);
-            
+
             logger.LogWarning("Validation failed: {Errors}", string.Join("; ", errors));
             return RedirectToAction(nameof(Index));
         }
@@ -50,10 +50,10 @@ public class ContactController(
         try
         {
             var entity = await service.AddAsync(model);
-            
+
             TempData["Toast.Type"] = "success";
             TempData["Toast.Message"] = $"Contact \"{entity.Name}\" created";
-            
+
             logger.LogInformation("Contact created. Name: {Name}", entity.Name);
             return RedirectToAction(nameof(Index));
         }
@@ -63,7 +63,7 @@ public class ContactController(
             return RedirectToAction(nameof(Index));
         }
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, ContactViewModel model)
@@ -73,7 +73,7 @@ public class ContactController(
             var errors = ModelState.Values
                 .SelectMany(v => v.Errors)
                 .Select(e => e.ErrorMessage);
-            
+
             logger.LogWarning("Validation failed: {Errors}", string.Join("; ", errors));
             return RedirectToAction(nameof(Index));
         }
@@ -85,15 +85,15 @@ public class ContactController(
             {
                 TempData["Toast.Type"] = "warning";
                 TempData["Toast.Message"] = "Contact was not updated";
-                
+
                 logger.LogWarning("Contact {Id} was not updated", model.Id);
                 return RedirectToAction(nameof(Index));
             }
-            
+
             TempData["Toast.Type"] = "success";
             TempData["Toast.Message"] = $"Contact \"{model.Name}\" updated";
-            
-            logger.LogInformation("Contact updated. Name: {Name}",  model.Name);
+
+            logger.LogInformation("Contact updated. Name: {Name}", model.Name);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -120,20 +120,58 @@ public class ContactController(
             {
                 TempData["Toast.Type"] = "warning";
                 TempData["Toast.Message"] = "Contact was not deleted";
-                
+
                 logger.LogWarning("Contact {Id} was not deleted", id);
                 return RedirectToAction(nameof(Index));
             }
-            
+
             TempData["Toast.Type"] = "success";
             TempData["Toast.Message"] = "Contact deleted";
-            
+
             logger.LogInformation("Contact {Id} was deleted.", id);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred when deleted the contact.");
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BulkDelete(List<Guid>? ids)
+    {
+        if (ids == null || ids.Count == 0)
+        {
+            TempData["Toast.Type"] = "warning";
+            TempData["Toast.Message"] = "No contacts selected";
+            return RedirectToAction(nameof(Index));
+        }
+
+        try
+        {
+            var deletedCount = await service.DeleteRangeAsync(ids);
+
+            if (deletedCount == 0)
+            {
+                TempData["Toast.Type"] = "warning";
+                TempData["Toast.Message"] = "No contacts were deleted";
+
+                logger.LogWarning("Bulk delete: no entities deleted");
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Toast.Type"] = "success";
+            TempData["Toast.Message"] = $"{deletedCount} contacts deleted";
+
+            logger.LogInformation("Bulk delete executed. Deleted: {Count}", deletedCount);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "An error occurred when deleting the contacts");
             return RedirectToAction(nameof(Index));
         }
     }

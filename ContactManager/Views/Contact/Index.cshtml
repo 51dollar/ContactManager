@@ -1,11 +1,22 @@
 ﻿@model ContactManager.Models.ViewModels.IndexViewModel
-<div class="container-xl p-4">
-    <div class="app-box mb-4">
+<div class="container-xl p-4 d-flex flex-column gap-4">
+    <div class="app-box">
         <div class="row align-items-center">
             <div class="col">
                 <h2 class="mb-0 fw-semibold">Contacts</h2>
             </div>
-            <div class="col-auto">
+
+            <div class="col-auto d-flex gap-2">
+                <button id="toolbarEditBtn"
+                        class="btn btn-icon btn-warning btn-sm d-none">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>
+
+                <button id="toolbarDeleteBtn"
+                        class="btn btn-icon btn-danger btn-sm d-none">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+
                 <button class="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#contactModal"
@@ -16,63 +27,50 @@
         </div>
     </div>
 
-    <div class="app-box">
-        <table class="table table-striped align-middle text-center" id="contactsTable">
-            <thead>
-            <tr>
-                <th class="text-center">Name</th>
-                <th class="text-center">Phone</th>
-                <th class="text-center">Job</th>
-                <th class="text-center">Birth Date</th>
-                <th class="text-center">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var c in Model.Contacts)
-            {
-                <tr>
-                    <td>@c.Name</td>
-                    <td>@c.MobilePhone</td>
-                    <td>@c.JobTitle</td>
-                    <td>@c.BirthDate.ToShortDateString()</td>
-                    <td>
-                        <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-warning btn-sm edit-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#contactModal"
-                                    data-title="Edit contact"
-                                    data-id="@c.Id"
-                                    data-name="@c.Name"
-                                    data-phone="@c.MobilePhone"
-                                    data-job="@c.JobTitle"
-                                    data-birth="@c.BirthDate.ToString("yyyy-MM-dd")">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
+<div class="app-box">
+    <table class="table table-striped align-middle text-center" id="contactsTable">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="selectAll">
+            </th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Job</th>
+            <th>Birth Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in Model.Contacts)
+        {
+            <tr data-id="@c.Id"
+                data-name="@c.Name"
+                data-phone="@c.MobilePhone"
+                data-job="@c.JobTitle"
+                data-birth="@c.BirthDate.ToString("yyyy-MM-dd")">
 
-                            <form asp-action="Delete"
-                                  asp-route-id="@c.Id"
-                                  method="post"
-                                  class="d-inline">
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Delete contact?')">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
+                <td>
+                    <input type="checkbox"
+                           class="row-check"
+                           value="@c.Id" />
+                </td>
+                <td>@c.Name</td>
+                <td>@c.MobilePhone</td>
+                <td>@c.JobTitle</td>
+                <td>@c.BirthDate.ToShortDateString()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
 </div>
 
 @await Html.PartialAsync("Modal/_ContactModal", Model.Contact)
+@await Html.PartialAsync("_BulkActions")
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 
     <script src="~/js/contact/contact.modal.js"></script>
-    <script src="~/js/contact/contact.DataTable.js"></script>
+    <script src="~/js/contact/contact.table.js"></script>
 }

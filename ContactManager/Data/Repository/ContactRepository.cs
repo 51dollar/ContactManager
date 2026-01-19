@@ -1,4 +1,5 @@
 ﻿using ContactManager.Models.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContactManager.Data.Repository;
 
@@ -8,4 +9,9 @@ public class ContactRepository(AppDbContext context) : BaseRepository<Contact>(c
 
     public virtual async Task<Contact?> GetByIdAsync(Guid id) =>
         await _context.Set<Contact>().FindAsync(id);
+    
+    public Task<int> DeleteByIdsAsync(IEnumerable<Guid> ids) =>
+        _context.Contacts
+            .Where(x => ids.Contains(x.Id))
+            .ExecuteDeleteAsync();
 }
