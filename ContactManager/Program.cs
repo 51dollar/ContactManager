@@ -15,6 +15,8 @@ builder.Services.AddScoped<IContactService, ContactService>();
 
 var app = builder.Build();
 
+await app.InitDatabaseAsync();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
