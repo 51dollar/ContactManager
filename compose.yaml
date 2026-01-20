@@ -1,7 +1,15 @@
 ﻿services:
   contactmanager:
-    image: contactmanager
     build:
       context: .
       dockerfile: ContactManager/Dockerfile
+    ports:
+      - "5000:8080"
+    volumes:
+      - contactmanager-data:/data
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Data Source=/data/Contacts.db"
 
+volumes:
+  contactmanager-data:
